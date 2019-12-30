@@ -4,13 +4,13 @@ import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue';
 
 import App from './components/App.vue'
-// import Dashboard from './components/Dashboard.vue'
+import Profile from './components/Profile.vue'
 // import Sidebar from './components/Sidebar.vue'
 // import SiteList from './components/SiteList.vue'
 // import Users from './components/Users.vue'
 // import Video from './components/Video.vue'
 
-Vue.use(VueRouter, BootstrapVue)
+Vue.use(BootstrapVue)
 
 // const router = new VueRouter({
 //   mode: 'history',
@@ -40,7 +40,9 @@ Vue.use(VueRouter, BootstrapVue)
 
 const app = new Vue({
     el: '#app',
-    components: { App },
+    components: {
+   		App
+ 	},
     // router,
     axios
 });
