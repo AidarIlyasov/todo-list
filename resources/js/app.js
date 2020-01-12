@@ -5,7 +5,7 @@ import BootstrapVue from 'bootstrap-vue';
 
 import App from './components/App.vue'
 import Profile from './components/Profile.vue'
-// import Sidebar from './components/Sidebar.vue'
+import AddTask from './components/AddTask.vue'
 // import SiteList from './components/SiteList.vue'
 // import Users from './components/Users.vue'
 // import Video from './components/Video.vue'

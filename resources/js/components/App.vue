@@ -12,7 +12,13 @@
                     We'll never share your email with anyone else.</small>
             </div>
         </b-modal>
-        <div id="task-calendar" class="popup" ref="popup" :title="today_date">
+        <modal v-show="isModalVisible"
+          @close="closeModal">
+        <template v-slot:header>
+          <h5> {{ today_date }} </h5>
+        </template>
+        <template v-slot:body>
+        <div id="task-calendar">
           <table>
             <tbody>
               <tr>
@@ -45,10 +51,8 @@
             </tbody>
           </table>
         </div>
-        <modal
-          v-show="isModalVisible"
-          @close="closeModal"
-        />
+        </template>
+        </modal>
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="d-flex">
@@ -62,7 +66,7 @@
                         ">Task calendar</li>
                         <li v-b-modal.settings>Settings</li>
                         <hr class="mt-2 mb-1">
-                        <li @click="showModal()">Log out</li>
+                        <li>Log out</li>
                     </div>
                 </div>
                 <hr class="mt-1 mb-3">
@@ -73,7 +77,7 @@
                     <li class="">Morbi leo risus <i class="fa fa-pencil"></i></li>
                     <li class="">Porta ac consectetur ac <i class="fa fa-pencil"></i></li>
                     <li class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores iste perspiciatis iure, voluptate, id blanditiis. <i class="fa fa-pencil"></i></li>
-                    <li class="add-task">Add task +</li>
+                    <li class="add-task" @click="addTask()">Add task +</li>
                 </ul>
                 <div class="asode-tasks mt-3 mb-3">
                     <h4 class="d-flex justify-content-between">Today tasks <span>+</span></h4>
@@ -141,6 +145,7 @@
 </template>
 <script>
   import Modal from './Modal.vue'
+  import Profile from './Profile.vue'
   export default {
   components: {
     'modal': Modal
@@ -209,7 +214,7 @@
           k++;
           index++;
       }
-      console.log(this.dayOfWeek);
+      this.isModalVisible = true;
     },
     showModal() {
       this.isModalVisible = true;
@@ -288,7 +293,13 @@ body {
     padding: 5px 10px 5px 20px;
     border-top: solid 1px #3d91cd;
 }
-
+#task-calendar{
+  height: 60vh;
+  overflow-y: scroll;
+}
+.day, .dt{
+  position: relative;
+}
 .contributor-profile {
     width: 30px;
     height: 30px;
