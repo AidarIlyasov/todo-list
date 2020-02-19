@@ -6,7 +6,7 @@ import BootstrapVue from 'bootstrap-vue';
 import App from './components/App.vue'
 import Profile from './components/Profile.vue'
 import AddTask from './components/AddTask.vue'
-// import SiteList from './components/SiteList.vue'
+import Board from './components/Board.vue'
 // import Users from './components/Users.vue'
 // import Video from './components/Video.vue'
 
@@ -36,7 +36,7 @@ Vue.use(BootstrapVue)
 //         component: Video
 //     },
 //     ]
-//  });   
+//  });
 
 const app = new Vue({
     el: '#app',

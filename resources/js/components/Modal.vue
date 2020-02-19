@@ -19,13 +19,13 @@
         </footer>
       </div>
     </div>
-  </transition>  
+  </transition>
 </template>
 <script>
   export default {
     methods: {
       close() {
-        this.$emit('close');
+        this.$emit('close', false);
       },
     },
   };

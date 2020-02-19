@@ -12,10 +12,12 @@
                     We'll never share your email with anyone else.</small>
             </div>
         </b-modal>
-        <modal v-show="isModalVisible"
-          @close="closeModal">
+        <!-- add-task -->
+        <add-task :taskModal="taskModal" @close="close"></add-task>
+        <!-- Начало. Перенести в компонент -->
+        <modal v-show="isModalVisible" @close="close">
         <template v-slot:header>
-          <h5> {{ today_date }} </h5>
+          <h5> {{ modalTitle }} </h5>
         </template>
         <template v-slot:body>
         <div id="task-calendar">
@@ -53,6 +55,7 @@
         </div>
         </template>
         </modal>
+        <!-- Конец. Перенести в компонент -->
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="d-flex">
@@ -70,17 +73,12 @@
                     </div>
                 </div>
                 <hr class="mt-1 mb-3">
-                <h4 class="d-flex justify-content-between">My boards <span>-</span></h4>
-                <ul class="list-group left-menu sm">
-                    <li class="">Cras justo odio <i class="fa fa-pencil"></i></li>
-                    <li class="active">Dapibus ac facilisis in <i class="fa fa-pencil"></i></li>
-                    <li class="">Morbi leo risus <i class="fa fa-pencil"></i></li>
-                    <li class="">Porta ac consectetur ac <i class="fa fa-pencil"></i></li>
-                    <li class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores iste perspiciatis iure, voluptate, id blanditiis. <i class="fa fa-pencil"></i></li>
-                    <li class="add-task" @click="addTask()">Add task +</li>
-                </ul>
+                <!-- boards component -->
+                <board></board>
+                <!-- today tasks list -->
                 <div class="asode-tasks mt-3 mb-3">
                     <h4 class="d-flex justify-content-between">Today tasks <span>+</span></h4>
+                    <li class="add-task" @click="addTask()">Add task +</li>
                 </div>
             </div>
             <div class="col-md-9">
@@ -144,17 +142,24 @@
     </div>
 </template>
 <script>
-  import Modal from './Modal.vue'
-  import Profile from './Profile.vue'
+  import Modal from './Modal.vue';
+  import Profile from './Profile.vue';
+  import AddTask from './AddTask.vue';
+  import Board from './Board.vue';
   export default {
   components: {
-    'modal': Modal
+    'modal': Modal,
+    'addTask': AddTask,
+    'porfile': Profile,
+    'board': Board
   },
   data() {
       return {
         isModalVisible: false,
+        taskModal: false,
         dayOfWeek: [],
-        monthDays: []
+        monthDays: [],
+        modalTitle: ''
       }
   },
   mounted() {
@@ -215,19 +220,25 @@
           index++;
       }
       this.isModalVisible = true;
+      this.modalTitle = `Today is ${this.todayDate()}`;
     },
     showModal() {
       this.isModalVisible = true;
     },
-    closeModal() {
-      this.isModalVisible = false;
+    close(status) {
+      console.log(status);
+      this.isModalVisible = status;
+      this.taskModal = status;
+    },
+    addTask() {
+      this.taskModal = true;
+    },
+    todayDate() {
+      let date = new Date();
+      return `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
     }
   },
   computed: {
-      today_date() {
-          let date = new Date();
-          return `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
-      }
   }
 }
 
