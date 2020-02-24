@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+      <!-- Перенести в копонент профиля -->
         <b-modal id="settings" title="Some user name">
             <div class="form-group">
                 <label for="user_name">User name</label>
@@ -12,50 +13,7 @@
                     We'll never share your email with anyone else.</small>
             </div>
         </b-modal>
-        <!-- add-task -->
-        <add-task :taskModal="taskModal" @close="close"></add-task>
-        <!-- Начало. Перенести в компонент -->
-        <modal v-show="isModalVisible" @close="close">
-        <template v-slot:header>
-          <h5> {{ modalTitle }} </h5>
-        </template>
-        <template v-slot:body>
-        <div id="task-calendar">
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                    <div class="day mo"></div>
-                    <div class="day" v-for="(day, key) in dayOfWeek">{{ day }}</div>
-                </td>
-                <td>
-                  <table id="months">
-                    <tbody>
-                      <tr id="mtoprow">
-                        <td class="mc" valign="top" v-for="(month, key) in monthDays">
-                          <span :id="'p' + key">
-                            <div class="months">
-                                <div class="mo"> {{ month.name }} </div>
-                                <div class="dt" v-for="offset in month.offset"></div>
-                                <div class="dt" v-for="(day, index) in month.days" :data-month="key" :data-day="index">{{ day }}
-                                  <small v-for="item in month.tasks.day" class="task-count">
-                                    <i v-if="item.date == day">{{ item.count}}</i>
-                                  </small>
-                                </div>
-                            </div>
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        </template>
-        </modal>
-        <!-- Конец. Перенести в компонент -->
+        <!-- Конец Перенести в копонент профиля -->
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="d-flex">
@@ -63,10 +21,11 @@
                         AI
                     </div>
                     <div class="profile-option ml-3">
-                        <!-- <li>View profile</li> -->
-                        <!-- router link -->
-                        <li class="active" @click="taskCalendar()
-                        ">Task calendar</li>
+                        <li
+                          class="active"
+                          @click="taskCalendar()">
+                          Task calendar
+                        </li>
                         <li v-b-modal.settings>Settings</li>
                         <hr class="mt-2 mb-1">
                         <li>Log out</li>
@@ -75,91 +34,37 @@
                 <hr class="mt-1 mb-3">
                 <!-- boards component -->
                 <board></board>
-                <!-- today tasks list -->
-                <div class="asode-tasks mt-3 mb-3">
-                    <h4 class="d-flex justify-content-between">Today tasks <span>+</span></h4>
-                    <li class="add-task" @click="addTask()">Add task +</li>
-                </div>
+                <!-- today tasks list-->
+                <aside-tasks></aside-tasks>
+                <!-- task calendar -->
+                <task-calendar></task-calendar>
             </div>
             <div class="col-md-9">
-                <div class="col-md-12">
-                    <h3>Dapibus ac facilisis in
-                        <button class="btn btn-sm btn-outline-primary">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                        <div class="board-contributors">
-                            <small class="task-autor form-text text-muted mt-1 mb-1">Autor: <span class="element-outline-primary">Aidar Ilyasov</span></small>
-                            <small class="task-assistant text-muted">Invited:
-                                <span class="element-outline-primary">David Guetta <i class="fa fa-close"></i></span>
-                                <span class="element-outline-primary">Andrey Balik <i class="fa fa-close"></i></span>
-                            </small>
-                        </div>
-                    </h3>
-                </div>
-                <hr>
-                <div class="col-md-12">
-                    <button class="btn btn-outline-primary btn-sm"><i class="fa fa-star"></i> Favorite</button>
-                    <button class="btn btn-outline-primary btn-sm"><i class="fa fa-lock"></i> Private</button>
-                    <button class="btn btn-outline-primary btn-sm"><i class="fa fa-user-plus"></i> Invite</button>
-                    <button class="btn btn-outline-primary btn-sm"><i class="fa fa-picture-o"></i> Change wallpaper</button>
-                    <button class="btn btn-outline-primary btn-sm change-view"><i class="fa fa-bars"></i></button>
-                </div>
-                <div class="col-md-12">
-                    <div class="card bg-light mt-3 p-0 col-md-4">
-                        <div class="card-header task-title">
-                            <h5 class="card-title mb-0 d-flex justify-content-between">Light card title <span class="contributor-message"><span class="fa fa-comment-o"></span></span></h5>
-                            <div class="task_title-option align-items-center justify-content-around">
-                                <i class="fa fa-pencil-square-o" title="edit task"></i>
-                                <i class="fa fa-star-o" title="set as favorite"></i>
-                                <i class="fa fa-user-plus" title="appoint a person"></i>
-                                <i class="fa fa-trash-o" title="remove task"></i>
-                            </div>
-                        </div>
-                        <div class="card-body task-body">
-                            <p class="task-text">
-                                Some quick example text to build on the
-                                card title and make up the bulk of the card's content.
-                            </p>
-                            <ul class="task-list">
-                                <li><i class="fa fa-square-o"></i> task one</li>
-                                <li><i class="fa fa-check-square-o"></i> task two</li>
-                                <li><i class="fa fa-square-o"></i> task three</li>
-                            </ul>
-                        </div>
-                        <div class="task-footer bg-transparent border-primary">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="task-contributors d-flex">
-                                    <div class="contributor-profile">DG</div>
-                                    <div class="contributor-profile">AB</div>
-                                </div>
-                                <strong>15.12.19 23:09</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <!-- main section - tasks board -->
+              <task-board></task-board>
             </div>
         </div>
     </div>
 </template>
 <script>
-  import Modal from './Modal.vue';
-  import Profile from './Profile.vue';
-  import AddTask from './AddTask.vue';
-  import Board from './Board.vue';
+  import {bus} from '../app.js';
+  import Profile from './aside/Profile.vue';
+  import asideTasks from './aside/AsideTasks.vue';
+  import Board from './aside/Board.vue';
+  import taskCalendar from './aside/TaskCalendar.vue';
+  import taskBoard from './main/TaskBoard.vue';
+
   export default {
   components: {
-    'modal': Modal,
-    'addTask': AddTask,
+    'asideTasks': asideTasks,
     'porfile': Profile,
-    'board': Board
+    'board': Board,
+    'taskCalendar': taskCalendar,
+    'taskBoard': taskBoard
   },
   data() {
       return {
-        isModalVisible: false,
-        taskModal: false,
-        dayOfWeek: [],
-        monthDays: [],
-        modalTitle: ''
+
       }
   },
   mounted() {
@@ -169,76 +74,9 @@
     profile() {
         console.log("Profile");
     },
-    taskCalendar(year = '2019') {
-      let dyasName = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-      let monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      let firstDayName = 6;
-      let lastDayName = 0;
-
-      for (var i = 0; i < 12; i++) {
-          let day = new Date(year, i).getDay();
-          let tasks = {
-              'month': i,
-              'day': [{
-                      'date': Math.floor(Math.random() * (31 - 1) + 1),
-                      'count': Math.floor(Math.random() * (10 - 1) + 1)
-                  },
-                  {
-                      'date': Math.floor(Math.random() * (31 - 1) + 1),
-                      'count': Math.floor(Math.random() * (10 - 1) + 1)
-                  },
-                  {
-                      'date': Math.floor(Math.random() * (31 - 1) + 1),
-                      'count': Math.floor(Math.random() * (10 - 1) + 1)
-                  }
-              ],
-          };
-          lastDayName = lastDayName < day ? day : lastDayName;
-          firstDayName = firstDayName > day ? day : firstDayName;
-
-          this.monthDays.push({
-              'name': monthName[i],
-              'offset': day,
-              'days': new Date(year, i, 0).getDate(),
-              'tasks': tasks
-          });
-
-          this.monthDays[0] = {
-
-          }
-      }
-
-      let index = firstDayName;
-      let k = 0;
-
-      while (index < +lastDayName + 31) {
-          if (dyasName[k] == undefined) {
-              k = 1;
-          }
-          this.dayOfWeek.push(dyasName[k]);
-          k++;
-          index++;
-      }
-      this.isModalVisible = true;
-      this.modalTitle = `Today is ${this.todayDate()}`;
-    },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    close(status) {
-      console.log(status);
-      this.isModalVisible = status;
-      this.taskModal = status;
-    },
-    addTask() {
-      this.taskModal = true;
-    },
-    todayDate() {
-      let date = new Date();
-      return `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
+    taskCalendar(){
+      bus.$emit('modal', true);
     }
-  },
-  computed: {
   }
 }
 

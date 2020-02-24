@@ -1,5 +1,9 @@
 <template>
 	<div class="">
+		<div class="asode-tasks mt-3 mb-3">
+				<h4 class="d-flex justify-content-between">Today tasks <span>+</span></h4>
+				<li class="add-task" @click="addTask()">Add task +</li>
+		</div>
 		<modal id="add-task"
 					v-show="taskModal"
 					@close="closeModal">
@@ -27,18 +31,18 @@
 	</div>
 </template>
 <script>
-	import Modal from './Modal.vue';
+	import Modal from '../Modal.vue';
 	export default {
 		components: {
 			'modal': Modal
 		},
-		props: ['taskModal'],
 		data(){
 		  return {
 				modalTitle: 'Добавить задачу',
 				taskTitle: '',
 				taskEndDate: '',
-				taskDescription: ''
+				taskDescription: '',
+				taskModal: false
 		  }
 		},
 		methods: {
@@ -47,7 +51,7 @@
 	       this.modalTitle = 'Task add modal title';
 		   },
 			 closeModal() {
-				this.$emit('close', false);
+				 this.taskModal = false;
 			},
 			createTask() {
 				console.log({

@@ -4,11 +4,12 @@ import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue';
 
 import App from './components/App.vue'
-import Profile from './components/Profile.vue'
-import AddTask from './components/AddTask.vue'
-import Board from './components/Board.vue'
+// import AsideTasks from './components/AsideTasks.vue'
+// import Board from './components/Board.vue'
 // import Users from './components/Users.vue'
 // import Video from './components/Video.vue'
+
+export const bus = new Vue();
 
 Vue.use(BootstrapVue)
 
@@ -43,6 +44,5 @@ const app = new Vue({
     components: {
    		App
  	},
-    // router,
     axios
 });

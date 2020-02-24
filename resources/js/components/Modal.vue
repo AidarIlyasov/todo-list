@@ -22,10 +22,12 @@
   </transition>
 </template>
 <script>
+  import {bus} from '../app.js';
   export default {
     methods: {
       close() {
         this.$emit('close', false);
+        bus.$emit('modal', false);
       },
     },
   };
