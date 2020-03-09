@@ -14,8 +14,8 @@
             </div>
         </b-modal>
         <!-- Конец Перенести в копонент профиля -->
-        <div class="row mt-5">
-            <div class="col-md-3">
+        <div class="row mt-4">
+            <div class="col-md-3 pt-4 bg-gray">
                 <div class="d-flex">
                     <div class="user-profile border border-primary rounded-circle mb-2" @click="profile()">
                         AI
@@ -64,7 +64,7 @@
   },
   data() {
       return {
-
+        // bgImage: '#fff'
       }
   },
   mounted() {
@@ -77,13 +77,23 @@
     taskCalendar(){
       bus.$emit('modal', true);
     }
+  },
+  created(){
+    bus.$on('background', url => {
+      let body = document.querySelector('body');
+      body.style.background = url ? `url(${url}) no-repeat center / cover` : '#fff';
+    })
   }
 }
 
 </script>
 <style lang="scss">
+  .remove-color{
+    color: tomato;
+  }
 body {
     background-color: #fff;
+    //background: url(https://images.unsplash.com/photo-1582996091947-7c50ca745bc9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80) no-repeat center / cover;
 }
 
 .add-task {
@@ -100,48 +110,10 @@ body {
     border-radius: 0;
 }
 
-.task-title {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    position: relative;
-    transition: .3s;
-
-    &:hover>.task_title-option {
-        display: flex;
-    }
+.bg-gray{
+  background: #fff;
 }
 
-.task_title-option {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    padding: 0 10px;
-    display: none;
-    background-color: #f8fafc;
-}
-
-.task-list {
-    padding-left: 10px;
-
-    li {
-        list-style: none;
-    }
-}
-
-.task-body {
-    padding: 10px;
-}
-
-.task-text {
-    margin: 5px 0;
-}
-
-.task-footer {
-    padding: 5px 10px 5px 20px;
-    border-top: solid 1px #3d91cd;
-}
 #task-calendar{
   height: 60vh;
   overflow-y: scroll;
@@ -237,13 +209,24 @@ body {
     font-size: 16px;
 }
 
+.element-primary, .element-outline-primary {
+  padding: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .3s;
+}
+.element-primary{
+  background-color: #3490dc;
+  border: solid 1px transparent;
+  color: #fff;
+  &:hover {
+      background: #fff;
+      color: #3490dc;
+      border: solid 1px #3490dc;
+  }
+}
 .element-outline-primary {
     border: solid 1px #3490dc;
-    padding: 0 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: .3s;
-
     &:hover {
         background: #3490dc;
         color: #fff;

@@ -1,7 +1,17 @@
 <template>
 	<div class="">
-		<div class="asode-tasks mt-3 mb-3">
+		<div class="aside-tasks mt-3 mb-3 today-tasks">
 				<h4 class="d-flex justify-content-between">Today tasks <span>+</span></h4>
+				<ul class="list-group left-menu sm">
+					<li>Some new task</li>
+				</ul>
+				<li class="add-task" @click="addTask()">Add task +</li>
+		</div>
+		<div class="aside-tasks mt-3 mb-3 common-tasks">
+				<h4 class="d-flex justify-content-between">Common tasks <span>+</span></h4>
+				<ul class="list-group left-menu sm">
+					<li>Some new task</li>
+				</ul>
 				<li class="add-task" @click="addTask()">Add task +</li>
 		</div>
 		<modal id="add-task"

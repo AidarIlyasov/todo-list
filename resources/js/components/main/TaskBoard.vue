@@ -1,10 +1,27 @@
 <template>
-  <div>
+  <div class="pt-4 pb-4 bg-gray">
     <div class="col-md-12">
-        <h3>Dapibus ac facilisis in
-            <button class="btn btn-sm btn-outline-primary">
-                <i class="fa fa-pencil"></i>
-            </button>
+        <h3>
+            <div class="borad-header d-flex align-items-center">
+              <span v-show="!boardEdited" class="mb-1 board-name">{{ board.name }}</span>
+              <input
+                class="board-edit-text mb-1 form-control form-control-sm"
+                v-show="boardEdited"
+                type="text"
+                v-model="boardName">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                v-show="!boardEdited"
+                @click="editBoard()">
+                  <i class="fa fa-pencil"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                v-show="boardEdited"
+                @click="saveBoard()">
+                  <i class="fa fa-floppy-o"></i>
+              </button>
+            </div>
             <div class="board-contributors">
                 <small class="task-autor form-text text-muted mt-1 mb-1">Autor: <span class="element-outline-primary">Aidar Ilyasov</span></small>
                 <small class="task-assistant text-muted">Invited:
@@ -33,8 +50,39 @@
     },
     data(){
       return {
-
+        boardName: '',
+        boardEdited: false,
+        board: {
+          name: 'Dapibus ac facilisis in'
+        }
+      }
+    },
+    methods: {
+      editBoard(){
+        console.log();
+        this.boardEdited = true;
+      },
+      saveBoard(){
+        this.boardEdited = false;
+        this.board.name  = this.boardName;
       }
     }
   }
 </script>
+<style lang="scss">
+  .board-name {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .board-edit-text {
+    height: 30px;
+    padding-left: 10px;
+    margin-right: 10px;
+    max-width: 350px;
+    margin-top: 5px;
+    &:hover, &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+</style>
