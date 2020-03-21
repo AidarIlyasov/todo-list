@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div class="d-flex">
       <div
         class="card bg-light mt-3 p-0 col-md-4"
         v-for="(task, index) in tasks"  :key="index"
+        ref="taskText"
       >
           <div class="card-header task-title">
               <h5 class="card-title mb-0 d-flex justify-content-between">
@@ -23,13 +24,44 @@
               </div>
           </div>
           <div class="card-body task-body">
-              <p class="task-text">
+              <p
+                class="task-text"
+                @click="editTaskText(index, true)"
+                v-show="!task.editable"
+              >
                   {{ task.body.text }}
               </p>
+              <textarea
+                rows="4"
+                class="form-control"
+                v-show="task.editable"
+                v-model="task.body.text"
+                ref="test"
+                @focusout="saveTaskText(index, false)"
+              >
+              </textarea>
               <ul class="task-list">
-                  <li v-for="(element, number) in task.body.list"  :key="number">
-                    <i :class="element.complete ? 'fa fa-check-square-o' : 'fa fa-square-o'"></i>
-                    {{ element.name }}
+                  <li
+                    v-for="(element, number) in task.body.list"
+                    :key="number"
+                    class="d-flex align-items-center"
+                  >
+                    <i
+                      @click="checkTaskElement(index, number, element.complete)"
+                      :class="element.complete ? 'fa fa-check-square-o' : 'fa fa-square-o'"
+                    ></i>
+                    <span
+                      ref="elementName"
+                      class="element-name"
+                      @click="editTaskElement(number, true)"
+                    >{{ element.name }}</span>
+                    <input
+                      type="text"
+                      ref="elementFeild"
+                      class="form-control form-control-sm element-field"
+                      v-model="task.body.list[number].name"
+                      @focusout="editTaskElement(number, false)"
+                    >
                   </li>
               </ul>
           </div>
@@ -40,12 +72,15 @@
                         class="contributor-profile"
                         v-for="(contributor, key) in task.contributors"  :key="key"
                       >
-                      {{ contributor }}
+                      {{ getFirstCharactet(contributor) }}
                       </div>
                   </div>
                   <strong>{{ task.completeDate }}</strong>
               </div>
           </div>
+      </div>
+      <div class="card bg-light mt-3 p-0 col-md-4">
+          <button class="btn btn-outline-primary">Add task +</button>
       </div>
     </div>
 </template>
@@ -56,6 +91,7 @@
         msg: 'Task list here',
         tasks: [
           {
+            editable: false,
             title: 'Light card title',
             favorite: true,
             performer: 'Alexandra Ki',
@@ -87,6 +123,30 @@
             }
           },
         ]
+      }
+    },
+    methods: {
+      editTaskText(taskId, status){
+        this.tasks[taskId]['editable'] = status;
+        this.$nextTick(function() {
+            this.$refs.test[0].focus();
+        });
+      },
+      saveTaskText(taskId, status){
+        this.tasks[taskId]['editable'] = status;
+      },
+      editTaskElement(elementNumber, status){
+        this.$refs.elementName[elementNumber].style.display = status ? 'none' : 'block';
+        this.$nextTick(function() {
+            this.$refs.elementFeild[elementNumber].style.display = status ? 'block' : 'none';
+            this.$refs.elementFeild[elementNumber].focus();
+        });
+      },
+      getFirstCharactet(str){
+        return str.split(' ').map(word => word[0]).join('').toUpperCase();
+      },
+      checkTaskElement(taskId, elementNumber, status){
+        this.tasks[taskId].body.list[elementNumber]['complete'] = !status;
       }
     }
   }
@@ -129,6 +189,28 @@
   }
   .task-body {
       padding: 10px;
+      overflow-y: scroll;
+      max-height: 200px;
+  }
+  .task-body{
+    scrollbar-width: thin;
+    .element-name{
+      margin-left: 10px;
+    }
+    .element-field {
+      display: none;
+      margin-left: 10px;
+    }
+  }
+  .task-body::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .task-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .task-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
   }
   .task-text {
       margin: 5px 0;

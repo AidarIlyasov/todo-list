@@ -95,6 +95,21 @@ body {
     background-color: #fff;
     //background: url(https://images.unsplash.com/photo-1582996091947-7c50ca745bc9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80) no-repeat center / cover;
 }
+textarea{
+  scrollbar-width: thin;
+}
+textarea::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+}
 
 .add-task {
     color: #3d91cd;

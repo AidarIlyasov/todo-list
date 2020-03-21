@@ -2547,11 +2547,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       msg: 'Task list here',
       tasks: [{
+        editable: false,
         title: 'Light card title',
         favorite: true,
         performer: 'Alexandra Ki',
@@ -2577,6 +2613,32 @@ __webpack_require__.r(__webpack_exports__);
         }
       }]
     };
+  },
+  methods: {
+    editTaskText: function editTaskText(taskId, status) {
+      this.tasks[taskId]['editable'] = status;
+      this.$nextTick(function () {
+        this.$refs.test[0].focus();
+      });
+    },
+    saveTaskText: function saveTaskText(taskId, status) {
+      this.tasks[taskId]['editable'] = status;
+    },
+    editTaskElement: function editTaskElement(elementNumber, status) {
+      this.$refs.elementName[elementNumber].style.display = status ? 'none' : 'block';
+      this.$nextTick(function () {
+        this.$refs.elementFeild[elementNumber].style.display = status ? 'block' : 'none';
+        this.$refs.elementFeild[elementNumber].focus();
+      });
+    },
+    getFirstCharactet: function getFirstCharactet(str) {
+      return str.split(' ').map(function (word) {
+        return word[0];
+      }).join('').toUpperCase();
+    },
+    checkTaskElement: function checkTaskElement(taskId, elementNumber, status) {
+      this.tasks[taskId].body.list[elementNumber]['complete'] = !status;
+    }
   }
 });
 
@@ -31250,7 +31312,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".remove-color {\n  color: tomato;\n}\nbody {\n  background-color: #fff;\n}\n.add-task {\n  color: #3d91cd;\n  font-weight: bold;\n  text-align: center;\n}\n.change-view {\n  margin: 0 0 0 auto;\n}\n.card {\n  border-radius: 0;\n}\n.bg-gray {\n  background: #fff;\n}\n#task-calendar {\n  height: 60vh;\n  overflow-y: scroll;\n}\n.day, .dt {\n  position: relative;\n}\n.contributor-profile {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  font-size: 12px;\n  line-height: 2.2;\n  border: solid 2px tomato;\n  text-align: center;\n  margin-left: -8px;\n  background-color: #fff;\n}\n.contributor-profile:first-child {\n  border: solid 2px green;\n}\n.user-profile {\n  display: -webkit-box;\n  display: flex;\n  -ms-align-items: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  font-size: 26px;\n  font-weight: bold;\n  width: 80px;\n  height: 80px;\n  cursor: pointer;\n  /*background: url(./piblic/img/profile.png) no-repeat center / contain;*/\n}\n.left-menu li {\n  list-style: none;\n  border-bottom: solid 1px #3d91cd;\n  line-height: 2;\n  cursor: pointer;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  padding-right: 5px;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.left-menu li:hover {\n  background-color: #dfe0e2;\n}\n.left-menu li:hover > i {\n  display: block;\n}\n.left-menu li > i {\n  display: none;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.left-menu li.active {\n  background-color: #2196F3;\n  color: #fff;\n}\n.left-menu li > i:hover {\n  font-size: 20px;\n}\n.profile-option {\n  line-height: 1.3;\n}\n.profile-option li {\n  list-style: none;\n  width: 100%;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 0 5px;\n}\n.profile-option li:hover {\n  background-color: #dfe0e2;\n}\n.board-contributors {\n  font-size: 16px;\n}\n.element-primary, .element-outline-primary {\n  padding: 0 5px;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.element-primary {\n  background-color: #3490dc;\n  border: solid 1px transparent;\n  color: #fff;\n}\n.element-primary:hover {\n  background: #fff;\n  color: #3490dc;\n  border: solid 1px #3490dc;\n}\n.element-outline-primary {\n  border: solid 1px #3490dc;\n}\n.element-outline-primary:hover {\n  background: #3490dc;\n  color: #fff;\n}\na:link,\na:active,\na:visited {\n  color: #777;\n  text-decoration: none;\n}\n.dt,\n.day,\n.mo {\n  text-align: right;\n  width: 55px;\n  height: 25px;\n}\n.day,\n.mo {\n  font-weight: bold;\n  color: #555;\n}\n.day,\n.dt {\n  margin-bottom: 5px;\n}\n.mo {\n  margin-bottom: 20px;\n}\ntable,\ntd {\n  border-spacing: 0;\n  vertical-align: top;\n}\nh1 {\n  display: inline-block;\n  font-size: 4.5em;\n  margin: 30px 0 0 40px;\n}\nh2 {\n  margin: 0 0 30px 40px;\n}\n#cal {\n  margin: 0 auto;\n  width: 780px;\n}\n#time {\n  float: right;\n}\nbody.night {\n  background-color: #111;\n  color: #EEE;\n}\nbody.night h1 {\n  color: #EEE;\n}\nbody.night .day,\nbody.night .mo {\n  color: #aaa;\n}\n.task-count {\n  background: #aea;\n  padding: 0 5px;\n  cursor: pointer;\n  position: absolute;\n  display: inline-block;\n}", ""]);
+exports.push([module.i, ".remove-color {\n  color: tomato;\n}\nbody {\n  background-color: #fff;\n}\ntextarea {\n  scrollbar-width: thin;\n}\ntextarea::-webkit-scrollbar {\n  width: 4px;\n  height: 4px;\n}\ntextarea::-webkit-scrollbar-track {\n  background: rgba(0, 0, 0, 0.1);\n}\ntextarea::-webkit-scrollbar-thumb {\n  background: rgba(0, 0, 0, 0.5);\n}\n.add-task {\n  color: #3d91cd;\n  font-weight: bold;\n  text-align: center;\n}\n.change-view {\n  margin: 0 0 0 auto;\n}\n.card {\n  border-radius: 0;\n}\n.bg-gray {\n  background: #fff;\n}\n#task-calendar {\n  height: 60vh;\n  overflow-y: scroll;\n}\n.day, .dt {\n  position: relative;\n}\n.contributor-profile {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  font-size: 12px;\n  line-height: 2.2;\n  border: solid 2px tomato;\n  text-align: center;\n  margin-left: -8px;\n  background-color: #fff;\n}\n.contributor-profile:first-child {\n  border: solid 2px green;\n}\n.user-profile {\n  display: -webkit-box;\n  display: flex;\n  -ms-align-items: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  font-size: 26px;\n  font-weight: bold;\n  width: 80px;\n  height: 80px;\n  cursor: pointer;\n  /*background: url(./piblic/img/profile.png) no-repeat center / contain;*/\n}\n.left-menu li {\n  list-style: none;\n  border-bottom: solid 1px #3d91cd;\n  line-height: 2;\n  cursor: pointer;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  padding-right: 5px;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.left-menu li:hover {\n  background-color: #dfe0e2;\n}\n.left-menu li:hover > i {\n  display: block;\n}\n.left-menu li > i {\n  display: none;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.left-menu li.active {\n  background-color: #2196F3;\n  color: #fff;\n}\n.left-menu li > i:hover {\n  font-size: 20px;\n}\n.profile-option {\n  line-height: 1.3;\n}\n.profile-option li {\n  list-style: none;\n  width: 100%;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 0 5px;\n}\n.profile-option li:hover {\n  background-color: #dfe0e2;\n}\n.board-contributors {\n  font-size: 16px;\n}\n.element-primary, .element-outline-primary {\n  padding: 0 5px;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.element-primary {\n  background-color: #3490dc;\n  border: solid 1px transparent;\n  color: #fff;\n}\n.element-primary:hover {\n  background: #fff;\n  color: #3490dc;\n  border: solid 1px #3490dc;\n}\n.element-outline-primary {\n  border: solid 1px #3490dc;\n}\n.element-outline-primary:hover {\n  background: #3490dc;\n  color: #fff;\n}\na:link,\na:active,\na:visited {\n  color: #777;\n  text-decoration: none;\n}\n.dt,\n.day,\n.mo {\n  text-align: right;\n  width: 55px;\n  height: 25px;\n}\n.day,\n.mo {\n  font-weight: bold;\n  color: #555;\n}\n.day,\n.dt {\n  margin-bottom: 5px;\n}\n.mo {\n  margin-bottom: 20px;\n}\ntable,\ntd {\n  border-spacing: 0;\n  vertical-align: top;\n}\nh1 {\n  display: inline-block;\n  font-size: 4.5em;\n  margin: 30px 0 0 40px;\n}\nh2 {\n  margin: 0 0 30px 40px;\n}\n#cal {\n  margin: 0 auto;\n  width: 780px;\n}\n#time {\n  float: right;\n}\nbody.night {\n  background-color: #111;\n  color: #EEE;\n}\nbody.night h1 {\n  color: #EEE;\n}\nbody.night .day,\nbody.night .mo {\n  color: #aaa;\n}\n.task-count {\n  background: #aea;\n  padding: 0 5px;\n  cursor: pointer;\n  position: absolute;\n  display: inline-block;\n}", ""]);
 
 // exports
 
@@ -31288,7 +31350,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "li {\n  list-style: none;\n}\ni.active {\n  color: #2196F3;\n}\n.task-title {\n  padding: 0.5rem 1rem;\n  cursor: pointer;\n  position: relative;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.task-title:hover > .task_title-option {\n  display: -webkit-box;\n  display: flex;\n}\n.task_title-option {\n  position: absolute;\n  top: 0;\n  height: 100%;\n  width: 100%;\n  left: 0;\n  padding: 0 10px;\n  display: none;\n  background-color: #f8fafc;\n}\n.task_title-option li {\n  position: relative;\n}\n.task-list {\n  padding-left: 10px;\n}\n.task-list li {\n  list-style: none;\n}\n.task-body {\n  padding: 10px;\n}\n.task-text {\n  margin: 5px 0;\n}\n.task-footer {\n  padding: 5px 10px 5px 20px;\n  border-top: solid 1px #3d91cd;\n}\n.task-status {\n  position: relative;\n}\n.task-status span.task_status-count {\n  position: absolute;\n  font-size: 11px;\n  font-weight: bold;\n  border-radius: 50%;\n  left: -10px;\n  text-align: center;\n  min-width: 20px;\n  padding: 3px;\n  background: tomato;\n}\n.action-icon {\n  background-color: tomato;\n  border-radius: 50%;\n  position: absolute;\n  width: 7px;\n  right: -5px;\n  height: 7px;\n}", ""]);
+exports.push([module.i, "li {\n  list-style: none;\n}\ni.active {\n  color: #2196F3;\n}\n.task-title {\n  padding: 0.5rem 1rem;\n  cursor: pointer;\n  position: relative;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.task-title:hover > .task_title-option {\n  display: -webkit-box;\n  display: flex;\n}\n.task_title-option {\n  position: absolute;\n  top: 0;\n  height: 100%;\n  width: 100%;\n  left: 0;\n  padding: 0 10px;\n  display: none;\n  background-color: #f8fafc;\n}\n.task_title-option li {\n  position: relative;\n}\n.task-list {\n  padding-left: 10px;\n}\n.task-list li {\n  list-style: none;\n}\n.task-body {\n  padding: 10px;\n  overflow-y: scroll;\n  max-height: 200px;\n}\n.task-body {\n  scrollbar-width: thin;\n}\n.task-body .element-name {\n  margin-left: 10px;\n}\n.task-body .element-field {\n  display: none;\n  margin-left: 10px;\n}\n.task-body::-webkit-scrollbar {\n  width: 4px;\n  height: 4px;\n}\n.task-body::-webkit-scrollbar-track {\n  background: rgba(0, 0, 0, 0.1);\n}\n.task-body::-webkit-scrollbar-thumb {\n  background: rgba(0, 0, 0, 0.5);\n}\n.task-text {\n  margin: 5px 0;\n}\n.task-footer {\n  padding: 5px 10px 5px 20px;\n  border-top: solid 1px #3d91cd;\n}\n.task-status {\n  position: relative;\n}\n.task-status span.task_status-count {\n  position: absolute;\n  font-size: 11px;\n  font-weight: bold;\n  border-radius: 50%;\n  left: -10px;\n  text-align: center;\n  min-width: 20px;\n  padding: 3px;\n  background: tomato;\n}\n.action-icon {\n  background-color: tomato;\n  border-radius: 50%;\n  position: absolute;\n  width: 7px;\n  right: -5px;\n  height: 7px;\n}", ""]);
 
 // exports
 
@@ -36928,137 +36990,258 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.tasks, function(task, index) {
-      return _c(
-        "div",
-        { key: index, staticClass: "card bg-light mt-3 p-0 col-md-4" },
-        [
-          _c("div", { staticClass: "card-header task-title" }, [
-            _c(
-              "h5",
-              { staticClass: "card-title mb-0 d-flex justify-content-between" },
-              [
-                _vm._v(
-                  "\n            " + _vm._s(task.title) + "\n            "
-                ),
-                _c("span", { staticClass: "task-status" }, [
-                  _c("span", { staticClass: "task_status-count" }, [
-                    _vm._v(_vm._s(task.comments.length))
-                  ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "task_title-option align-items-center justify-content-around"
-              },
-              [
-                _vm._m(0, true),
-                _vm._v(" "),
-                _c("li", [
-                  _c("i", {
-                    class: task.favorite ? "fa fa-star active" : "fa fa-star-o",
-                    attrs: { title: "set as favorite" }
-                  })
-                ]),
-                _vm._v(" "),
-                _vm._m(1, true),
-                _vm._v(" "),
-                _vm._m(2, true),
-                _vm._v(" "),
-                _c("li", [
-                  _c("i", {
-                    class: task.comments.length
-                      ? "fa fa-commenting active"
-                      : "fa fa-comment-o"
-                  }),
-                  _vm._v(" "),
-                  _c("span", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: task.comments.length,
-                        expression: "task.comments.length"
-                      }
-                    ],
-                    staticClass: "action-icon"
-                  })
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body task-body" }, [
-            _c("p", { staticClass: "task-text" }, [
-              _vm._v(
-                "\n              " + _vm._s(task.body.text) + "\n          "
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "ul",
-              { staticClass: "task-list" },
-              _vm._l(task.body.list, function(element, number) {
-                return _c("li", { key: number }, [
-                  _c("i", {
-                    class: element.complete
-                      ? "fa fa-check-square-o"
-                      : "fa fa-square-o"
-                  }),
+    { staticClass: "d-flex" },
+    [
+      _vm._l(_vm.tasks, function(task, index) {
+        return _c(
+          "div",
+          {
+            key: index,
+            ref: "taskText",
+            refInFor: true,
+            staticClass: "card bg-light mt-3 p-0 col-md-4"
+          },
+          [
+            _c("div", { staticClass: "card-header task-title" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "card-title mb-0 d-flex justify-content-between"
+                },
+                [
                   _vm._v(
-                    "\n                " +
-                      _vm._s(element.name) +
-                      "\n              "
-                  )
-                ])
-              }),
-              0
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "task-footer bg-transparent border-primary" },
-            [
+                    "\n            " + _vm._s(task.title) + "\n            "
+                  ),
+                  _c("span", { staticClass: "task-status" }, [
+                    _c("span", { staticClass: "task_status-count" }, [
+                      _vm._v(_vm._s(task.comments.length))
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
               _c(
                 "div",
                 {
                   staticClass:
-                    "d-flex justify-content-between align-items-center"
+                    "task_title-option align-items-center justify-content-around"
                 },
                 [
-                  _c(
-                    "div",
-                    { staticClass: "task-contributors d-flex" },
-                    _vm._l(task.contributors, function(contributor, key) {
-                      return _c(
-                        "div",
-                        { key: key, staticClass: "contributor-profile" },
-                        [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(contributor) +
-                              "\n                  "
-                          )
-                        ]
-                      )
-                    }),
-                    0
-                  ),
+                  _vm._m(0, true),
                   _vm._v(" "),
-                  _c("strong", [_vm._v(_vm._s(task.completeDate))])
+                  _c("li", [
+                    _c("i", {
+                      class: task.favorite
+                        ? "fa fa-star active"
+                        : "fa fa-star-o",
+                      attrs: { title: "set as favorite" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1, true),
+                  _vm._v(" "),
+                  _vm._m(2, true),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("i", {
+                      class: task.comments.length
+                        ? "fa fa-commenting active"
+                        : "fa fa-comment-o"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: task.comments.length,
+                          expression: "task.comments.length"
+                        }
+                      ],
+                      staticClass: "action-icon"
+                    })
+                  ])
                 ]
               )
-            ]
-          )
-        ]
-      )
-    }),
-    0
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body task-body" }, [
+              _c(
+                "p",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !task.editable,
+                      expression: "!task.editable"
+                    }
+                  ],
+                  staticClass: "task-text",
+                  on: {
+                    click: function($event) {
+                      return _vm.editTaskText(index, true)
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n              " + _vm._s(task.body.text) + "\n          "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: task.editable,
+                    expression: "task.editable"
+                  },
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: task.body.text,
+                    expression: "task.body.text"
+                  }
+                ],
+                ref: "test",
+                refInFor: true,
+                staticClass: "form-control",
+                attrs: { rows: "4" },
+                domProps: { value: task.body.text },
+                on: {
+                  focusout: function($event) {
+                    return _vm.saveTaskText(index, false)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(task.body, "text", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "task-list" },
+                _vm._l(task.body.list, function(element, number) {
+                  return _c(
+                    "li",
+                    { key: number, staticClass: "d-flex align-items-center" },
+                    [
+                      _c("i", {
+                        class: element.complete
+                          ? "fa fa-check-square-o"
+                          : "fa fa-square-o",
+                        on: {
+                          click: function($event) {
+                            return _vm.checkTaskElement(
+                              index,
+                              number,
+                              element.complete
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          ref: "elementName",
+                          refInFor: true,
+                          staticClass: "element-name",
+                          on: {
+                            click: function($event) {
+                              return _vm.editTaskElement(number, true)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(element.name))]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: task.body.list[number].name,
+                            expression: "task.body.list[number].name"
+                          }
+                        ],
+                        ref: "elementFeild",
+                        refInFor: true,
+                        staticClass:
+                          "form-control form-control-sm element-field",
+                        attrs: { type: "text" },
+                        domProps: { value: task.body.list[number].name },
+                        on: {
+                          focusout: function($event) {
+                            return _vm.editTaskElement(number, false)
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              task.body.list[number],
+                              "name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]
+                  )
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "task-footer bg-transparent border-primary" },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "task-contributors d-flex" },
+                      _vm._l(task.contributors, function(contributor, key) {
+                        return _c(
+                          "div",
+                          { key: key, staticClass: "contributor-profile" },
+                          [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(_vm.getFirstCharactet(contributor)) +
+                                "\n                  "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v(_vm._s(task.completeDate))])
+                  ]
+                )
+              ]
+            )
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _vm._m(3)
+    ],
+    2
   )
 }
 var staticRenderFns = [
@@ -37093,6 +37276,16 @@ var staticRenderFns = [
         staticClass: "fa fa-trash-o remove-color",
         attrs: { title: "remove task" }
       })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card bg-light mt-3 p-0 col-md-4" }, [
+      _c("button", { staticClass: "btn btn-outline-primary" }, [
+        _vm._v("Add task +")
+      ])
     ])
   }
 ]
