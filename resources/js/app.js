@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import axios from 'axios';
+import Unsplash from 'unsplash-js';
 import BootstrapVue from 'bootstrap-vue';
 
 import App from './components/App.vue'
@@ -10,8 +11,9 @@ import App from './components/App.vue'
 // import Video from './components/Video.vue'
 
 export const bus = new Vue();
+export const unsplash = new Unsplash({ accessKey: "Wx4M3FmX_OdJ1ZYvsZKEjfntrXJlNA_Ju9tNzCHHujE" });
 
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue, axios)
 
 // const router = new VueRouter({
 //   mode: 'history',

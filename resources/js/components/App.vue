@@ -99,7 +99,7 @@ textarea{
   scrollbar-width: thin;
 }
 textarea::-webkit-scrollbar {
-  width: 4px;
+  width: 4px; 
   height: 4px;
 }
 
