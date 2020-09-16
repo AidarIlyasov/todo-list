@@ -5,6 +5,9 @@ import Unsplash from 'unsplash-js';
 import BootstrapVue from 'bootstrap-vue';
 
 import App from './components/App.vue'
+import passportClient from './components/passport/Clients.vue'
+import AuthorizedClients from './components/passport/AuthorizedClients.vue'
+import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue'
 
 // import Board from './components/Board.vue'
 // import Users from './components/Users.vue'
@@ -44,7 +47,10 @@ Vue.use(BootstrapVue, axios)
 const app = new Vue({
     el: '#app',
     components: {
-   		App
+   		App,
+        passportClient,
+        AuthorizedClients,
+        PersonalAccessTokens
  	},
     axios
 });

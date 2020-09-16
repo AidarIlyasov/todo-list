@@ -13,6 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+ Route::middleware('auth:api')->group(function () {
+ 	Route::put('users/{id}/update', 'UserController@update');
+ });
+
+
+//Route::middleware('auth')->group(function () {
+//});
+
+
+//Route::post('user/{id}/update', 'UserController@update');
+Route::get('user', 'UserController@index');
+Route::put('setBackground', 'TaskController@setBackground');
+Route::get('test', 'UserController@index');

@@ -42,6 +42,8 @@
   import {unsplash} from '../../app.js';
   import {bus} from '../../app.js';
   import Modal from '../Modal.vue';
+  import axios from 'axios';
+
   export default {
     components: {
       'modal': Modal
@@ -51,43 +53,8 @@
         modalTitle: '',
         wallpaperModal: false,
         msg: 'Action buttons',
-        bgImage: 'https://images.unsplash.com/photo-1582996091947-7c50ca745bc9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80',
+        bgImage: '',
         images: [],
-        // images: [
-        //   {
-        //     author: 'Aidar Ilyasov',
-        //     link: 'https://unsplash.com/@aidarilyasov',
-        //     src:   'https://images.pexels.com/photos/1616403/pexels-photo-1616403.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/1293120/pexels-photo-1293120.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/34090/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/2130475/pexels-photo-2130475.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/1145720/pexels-photo-1145720.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/2471235/pexels-photo-2471235.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        //   {
-        //     author: 'Another Author',
-        //     src: 'https://images.pexels.com/photos/207153/pexels-photo-207153.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        //   },
-        // ]
       }
     },
     methods: {
@@ -100,6 +67,12 @@
       },
       setWallpaper(url){
         bus.$emit('background', url);
+        console.log('url');
+        axios.put('api/setBackground/', {'image': url}).then(res => {
+          console.log(res);
+        }).catch(e => {
+          console.log(e);
+        })
       }
     },
     created(){

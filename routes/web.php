@@ -13,9 +13,21 @@
 
 Auth::routes();
 
-	Route::get('/', function () {
-	    return view('app');
-	});
-Route::group(['middleware' => ['web', 'auth']], function(){
+
+Route::get('/admin', function() {
+	echo "admin page";
 });
 
+Route::get('/', function () {
+    return view('app');
+})->middleware('auth');
+
+
+Route::get('logout', function(){
+  Auth::logout();
+  return view('auth.login');
+});
+
+Route::get('test', 'UserController@test');
+
+// Route::get('/store', 'UserController@store');
