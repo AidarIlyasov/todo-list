@@ -1,0 +1,4 @@
+<IfModule dir_module>
+    RewriteEngine On
+    DirectoryIndex /public/index.php
+</IfModule>
