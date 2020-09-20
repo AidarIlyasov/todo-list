@@ -51,16 +51,6 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,12 +59,28 @@ class UserController extends Controller
      * @param  int  $id
      * @return string
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        dump($id);
-        dd($request);
-        $pathToFile = $request->file('image')->storeAs("images/users/{$id}", 'profile.jpg');
-        return response()->json($pathToFile, 200);
+        $userId = auth()->user()->id;
+        $user = User::find($userId);
+
+        $user->name = $request->name;
+        $user->save();
+
+        $this->saveUserPhoto($request, $userId);
+        return response()->json($user, 200);
+    }
+
+    /**
+     * save user photo
+     * @param Request $request
+     * @param int $userId
+     */
+    private function saveUserPhoto(Request $request, int $userId)
+    {
+        if (!is_null($request->file('image'))) {
+            $pathToFile = $request->file('image')->storeAs("images/users/{$userId}", 'profile.jpg');
+        }
     }
 
     /**

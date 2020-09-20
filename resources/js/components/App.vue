@@ -107,7 +107,7 @@
         formData.append('email', this.userEmail);
         formData.append('image', this.userImage);
 
-		axios.put('api/user/6/update', formData, {
+		axios.post('api/users', formData, {
 		    'headers': {'Content-Type': 'multipart/form-data'}
         }).then(res => {
 			console.log(res.data);

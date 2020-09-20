@@ -18,7 +18,14 @@ use Illuminate\Http\Request;
 // });
 
  Route::middleware('auth:api')->group(function () {
- 	Route::put('users/{id}/update', 'UserController@update');
+    //user
+    Route::post('users', 'UserController@update');
+
+ 	//board
+ 	Route::get('boards', 'BoardController@index'); // показать все доски
+ 	Route::post('boards', 'BoardController@store'); // создание новой доски
+ 	Route::get('boards/{id}', 'BoardController@show'); // показать одну доску
+ 	Route::put('boards/{id}', 'BoardController@update'); // обновление одной доски
  });
 
 
@@ -27,6 +34,5 @@ use Illuminate\Http\Request;
 
 
 //Route::post('user/{id}/update', 'UserController@update');
-Route::get('user', 'UserController@index');
 Route::put('setBackground', 'TaskController@setBackground');
 Route::get('test', 'UserController@index');

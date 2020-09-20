@@ -2028,7 +2028,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       formData.append('name', this.userName);
       formData.append('email', this.userEmail);
       formData.append('image', this.userImage);
-      axios__WEBPACK_IMPORTED_MODULE_6___default.a.put('api/user/6/update', formData, {
+      axios__WEBPACK_IMPORTED_MODULE_6___default.a.post('api/users', formData, {
         'headers': {
           'Content-Type': 'multipart/form-data'
         }
@@ -2196,6 +2196,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../app */ "./resources/js/app.js");
 //
 //
 //
@@ -2219,6 +2222,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2226,27 +2232,7 @@ __webpack_require__.r(__webpack_exports__);
       editedText: '',
       boardName: '',
       newBoard: false,
-      boards: [{
-        'name': 'Cras justo odio',
-        'created_at': '21.3.2019',
-        'editable': false
-      }, {
-        'name': 'Dapibus ac facilisis in',
-        'created_at': '21.3.2019',
-        'editable': false
-      }, {
-        'name': 'Morbi leo risus',
-        'created_at': '21.3.2019',
-        'editable': false
-      }, {
-        'name': 'Porta ac consectetur ac',
-        'created_at': '21.3.2019',
-        'editable': false
-      }, {
-        'name': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores iste perspiciatis iure, voluptate, id blanditiis.',
-        'created_at': '21.3.2019',
-        'editable': false
-      }]
+      boards: []
     };
   },
   methods: {
@@ -2273,7 +2259,23 @@ __webpack_require__.r(__webpack_exports__);
         'editable': false
       });
       this.boardName = '';
+    },
+    selectBoard: function selectBoard(id) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/boards/' + id).then(function (response) {
+        _app__WEBPACK_IMPORTED_MODULE_1__["bus"].$emit('borad', response.data);
+        _app__WEBPACK_IMPORTED_MODULE_1__["bus"].$emit('background', response.data.board.bg_image);
+      });
     }
+  },
+  created: function created() {
+    var _this = this;
+
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/boards').then(function (response) {
+      _this.boards = response.data;
+
+      _this.selectBoard(response.data[0]['id']); // load default first board
+
+    });
   }
 });
 
@@ -2495,6 +2497,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2523,8 +2527,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     setWallpaper: function setWallpaper(url) {
       _app_js__WEBPACK_IMPORTED_MODULE_1__["bus"].$emit('background', url);
-      console.log('url');
-      axios__WEBPACK_IMPORTED_MODULE_3___default.a.put('api/setBackground/', {
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.put('api/boards/1', {
         'image': url
       }).then(function (res) {
         console.log(res);
@@ -2567,6 +2570,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TaskList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TaskList.vue */ "./resources/js/components/main/TaskList.vue");
 /* harmony import */ var _ActionButtons_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ActionButtons.vue */ "./resources/js/components/main/ActionButtons.vue");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../app */ "./resources/js/app.js");
 //
 //
 //
@@ -2609,6 +2613,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2620,9 +2626,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       boardName: '',
       boardEdited: false,
-      board: {
-        name: 'Dapibus ac facilisis in'
-      }
+      board: {}
     };
   },
   methods: {
@@ -2632,8 +2636,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveBoard: function saveBoard() {
       this.boardEdited = false;
-      this.board.name = this.boardName;
+      this.board.title = this.boardName;
     }
+  },
+  created: function created() {
+    var _this = this;
+
+    var data = [];
+    _app__WEBPACK_IMPORTED_MODULE_2__["bus"].$on('borad', function (data) {
+      _this.board = data.board;
+      console.log(data.users);
+      console.log(data.users[_this.board.auhor_id]);
+    });
   }
 });
 
@@ -40148,7 +40162,12 @@ var render = function() {
             {
               key: index,
               class: index == 1 ? "active" : "",
-              attrs: { "data-test": board.editable }
+              attrs: { "data-test": board.editable },
+              on: {
+                click: function($event) {
+                  return _vm.selectBoard(board.id)
+                }
+              }
             },
             [
               _c("input", {
@@ -40190,7 +40209,7 @@ var render = function() {
                     }
                   ]
                 },
-                [_vm._v(_vm._s(board.name))]
+                [_vm._v(_vm._s(board.title))]
               ),
               _vm._v(" "),
               _c("i", {
@@ -40447,7 +40466,7 @@ var render = function() {
                                                 [
                                                   _vm._v(
                                                     _vm._s(day) +
-                                                      "\n                            "
+                                                      "\n                          "
                                                   ),
                                                   _vm._l(
                                                     month.tasks.day,
@@ -40546,7 +40565,7 @@ var render = function() {
           },
           [
             _c("i", { staticClass: "fa fa-picture-o" }),
-            _vm._v(" Change wallpaper")
+            _vm._v("\n\t\t\tChange wallpaper\n\t\t")
           ]
         ),
         _vm._v(" "),
@@ -40707,7 +40726,7 @@ var render = function() {
                 ],
                 staticClass: "mb-1 board-name"
               },
-              [_vm._v(_vm._s(_vm.board.name))]
+              [_vm._v(_vm._s(_vm.board.title))]
             ),
             _vm._v(" "),
             _c("input", {
@@ -40781,7 +40800,20 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "board-contributors" }, [
+            _c(
+              "small",
+              { staticClass: "task-autor form-text text-muted mt-1 mb-1" },
+              [
+                _vm._v("Autor: "),
+                _c("span", { staticClass: "element-outline-primary" }, [
+                  _vm._v(_vm._s(_vm.board.author_id))
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -40799,29 +40831,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "board-contributors" }, [
-      _c(
-        "small",
-        { staticClass: "task-autor form-text text-muted mt-1 mb-1" },
-        [
-          _vm._v("Autor: "),
-          _c("span", { staticClass: "element-outline-primary" }, [
-            _vm._v("Aidar Ilyasov")
-          ])
-        ]
-      ),
+    return _c("small", { staticClass: "task-assistant text-muted" }, [
+      _vm._v("Invited:\n                    "),
+      _c("span", { staticClass: "element-outline-primary" }, [
+        _vm._v("David Guetta "),
+        _c("i", { staticClass: "fa fa-close" })
+      ]),
       _vm._v(" "),
-      _c("small", { staticClass: "task-assistant text-muted" }, [
-        _vm._v("Invited:\n                  "),
-        _c("span", { staticClass: "element-outline-primary" }, [
-          _vm._v("David Guetta "),
-          _c("i", { staticClass: "fa fa-close" })
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "element-outline-primary" }, [
-          _vm._v("Andrey Balik "),
-          _c("i", { staticClass: "fa fa-close" })
-        ])
+      _c("span", { staticClass: "element-outline-primary" }, [
+        _vm._v("Andrey Balik "),
+        _c("i", { staticClass: "fa fa-close" })
       ])
     ])
   }
