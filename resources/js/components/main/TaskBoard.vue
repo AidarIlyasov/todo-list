@@ -23,11 +23,15 @@
                     </button>
                 </div>
                 <div class="board-contributors">
-                    <small class="task-autor form-text text-muted mt-1 mb-1">Autor: <span
-                        class="element-outline-primary">{{board.author_id}}</span></small>
-                    <small class="task-assistant text-muted">Invited:
-                        <span class="element-outline-primary">David Guetta <i class="fa fa-close"></i></span>
-                        <span class="element-outline-primary">Andrey Balik <i class="fa fa-close"></i></span>
+                    <small class="task-autor form-text text-muted mt-1 mb-2">Autor: <span
+                        class="element-outline-primary">{{board.author}}</span>
+                    </small>
+                    <small class="task-assistant text-muted py-1">Invited:
+                        <span
+                            class="element-outline-primary mr-1"
+                            v-for="(contributor, index) in board.contributors">
+                            {{contributor.name}} <i class="fa fa-close" @click="removeContribut(contributor.id)"></i>
+                        </span>
                     </small>
                 </div>
             </h3>
@@ -45,6 +49,7 @@
     import taskList from './TaskList.vue';
     import actionButtons from './ActionButtons.vue';
     import {bus} from "../../app";
+    import axios from 'axios';
 
     export default {
         components: {
@@ -66,14 +71,23 @@
             saveBoard() {
                 this.boardEdited = false;
                 this.board.title = this.boardName;
+            },
+            removeContribut(userId) {
+                console.log(userId, this.board.id);
+                axios.delete(`api/boards/${this.board.id}/users/${userId}`).then(response => {
+                   console.log(response);
+                });
             }
         },
         created() {
             let data = [];
             bus.$on('borad', data => {
-                this.board = data.board;
-                console.log(data.users);
-                console.log(data.users[this.board.auhor_id]);
+                const author = data.users.findIndex(user => user.id == data.board.author_id);
+                this.board   = data.board;
+                this.board.author = data.users[author]['name'];
+
+                data.users.splice(author, 1);
+                this.board.contributors = data.users;
             })
         }
     }

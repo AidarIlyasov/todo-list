@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class BoardController extends Controller
 {
+    public function __construct()
+    {
+       $this->authorizeResource(Board::class, 'board');
+//        $this->authorizeResource(Post::class, 'post');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,23 +40,19 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Board $board
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Board $board)
     {
-        $board = DB::table('boards')
-            ->select('*')
-            ->where('id', $id)->first();
-
         $boardUsers = DB::table('board_user as bu')
             ->join('users as u', 'u.id','=', 'bu.user_id')
             ->select('u.id', 'u.name', 'u.email', 'bu.access')
-            ->where('bu.board_id', $id)
+            ->where('bu.board_id', $board->id)
             ->get();
 
         $boardTaks = DB::table('tasks')
-            ->where('board_id', $id)
+            ->where('board_id', $board->id)
             ->get();
 
         $data = [
@@ -65,16 +66,15 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Board $board
+     * @return void
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Board $board)
     {
-        $board = Board::findOrFail($id);
         $board->bg_image = $request->image;
         $board->save();
-        dd(array($request->image, $id));
+        dd(array($request->image, $board->id));
     }
 
     /**
@@ -86,5 +86,22 @@ class BoardController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Remove user resource from board.
+     *
+     * @param  int  $board
+     * @param  int  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destoryUser($board, $user)
+    {
+        DB::table('board_user')->where([
+            ['board_id', '=', $board],
+            ['user_id', '=', $user],
+        ])->delete();
+
+        dump(array($board, $user));
     }
 }

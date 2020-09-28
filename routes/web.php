@@ -28,6 +28,8 @@ Route::get('logout', function(){
   return view('auth.login');
 });
 
-Route::get('test', 'UserController@test');
+Route::get('test', 'UserController@test');;
+
+//Route::get('edit', 'BoardController@edit');
 
 // Route::get('/store', 'UserController@store');

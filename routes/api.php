@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Models\Board;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,14 +25,17 @@ use Illuminate\Http\Request;
  	//board
  	Route::get('boards', 'BoardController@index'); // показать все доски
  	Route::post('boards', 'BoardController@store'); // создание новой доски
- 	Route::get('boards/{id}', 'BoardController@show'); // показать одну доску
- 	Route::put('boards/{id}', 'BoardController@update'); // обновление одной доски
+ 	Route::get('boards/{board}', 'BoardController@show'); // показать одну доску
+    Route::put('boards/{board}', 'BoardController@update'); // обновление одной доски
+    Route::delete('boards/{board}/users/{user}', 'BoardController@destoryUser'); // удаление пользователей доски
+    Route::delete('boards/{board}/status/{status}', 'BoardController@updateStatus'); // удаление пользователей доски
  });
 
 
-//Route::middleware('auth')->group(function () {
-//});
-
+//Route::get('boardsedit')->middleware('can:view, board'); // обновление одной доски
+//Route::put('boards/{board}', function (){
+//    echo 'update';
+//})->middleware('can:update, board');
 
 //Route::post('user/{id}/update', 'UserController@update');
 Route::put('setBackground', 'TaskController@setBackground');

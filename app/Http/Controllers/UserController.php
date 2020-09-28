@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Board;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\User;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -94,10 +95,12 @@ class UserController extends Controller
         //
     }
 
-    public function test(Request $request)
+    public function test(Request $request, Board $board)
     {
 
 //        $user = User::where('email', '=', $email)->first();
+
+        $this->authorize('update', $board);
         dd($request->user()->id);
     }
 }

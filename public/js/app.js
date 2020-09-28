@@ -2571,6 +2571,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TaskList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TaskList.vue */ "./resources/js/components/main/TaskList.vue");
 /* harmony import */ var _ActionButtons_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ActionButtons.vue */ "./resources/js/components/main/ActionButtons.vue");
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../app */ "./resources/js/app.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 //
 //
 //
@@ -2614,6 +2616,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -2637,6 +2644,12 @@ __webpack_require__.r(__webpack_exports__);
     saveBoard: function saveBoard() {
       this.boardEdited = false;
       this.board.title = this.boardName;
+    },
+    removeContribut: function removeContribut(userId) {
+      console.log(userId, this.board.id);
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a["delete"]("api/boards/".concat(this.board.id, "/users/").concat(userId)).then(function (response) {
+        console.log(response);
+      });
     }
   },
   created: function created() {
@@ -2644,9 +2657,13 @@ __webpack_require__.r(__webpack_exports__);
 
     var data = [];
     _app__WEBPACK_IMPORTED_MODULE_2__["bus"].$on('borad', function (data) {
+      var author = data.users.findIndex(function (user) {
+        return user.id == data.board.author_id;
+      });
       _this.board = data.board;
-      console.log(data.users);
-      console.log(data.users[_this.board.auhor_id]);
+      _this.board.author = data.users[author]['name'];
+      data.users.splice(author, 1);
+      _this.board.contributors = data.users;
     });
   }
 });
@@ -40803,16 +40820,44 @@ var render = function() {
           _c("div", { staticClass: "board-contributors" }, [
             _c(
               "small",
-              { staticClass: "task-autor form-text text-muted mt-1 mb-1" },
+              { staticClass: "task-autor form-text text-muted mt-1 mb-2" },
               [
                 _vm._v("Autor: "),
                 _c("span", { staticClass: "element-outline-primary" }, [
-                  _vm._v(_vm._s(_vm.board.author_id))
+                  _vm._v(_vm._s(_vm.board.author))
                 ])
               ]
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c(
+              "small",
+              { staticClass: "task-assistant text-muted py-1" },
+              [
+                _vm._v("Invited:\n                    "),
+                _vm._l(_vm.board.contributors, function(contributor, index) {
+                  return _c(
+                    "span",
+                    { staticClass: "element-outline-primary mr-1" },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(contributor.name) +
+                          " "
+                      ),
+                      _c("i", {
+                        staticClass: "fa fa-close",
+                        on: {
+                          click: function($event) {
+                            return _vm.removeContribut(contributor.id)
+                          }
+                        }
+                      })
+                    ]
+                  )
+                })
+              ],
+              2
+            )
           ])
         ])
       ]),
@@ -40826,25 +40871,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("small", { staticClass: "task-assistant text-muted" }, [
-      _vm._v("Invited:\n                    "),
-      _c("span", { staticClass: "element-outline-primary" }, [
-        _vm._v("David Guetta "),
-        _c("i", { staticClass: "fa fa-close" })
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "element-outline-primary" }, [
-        _vm._v("Andrey Balik "),
-        _c("i", { staticClass: "fa fa-close" })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
