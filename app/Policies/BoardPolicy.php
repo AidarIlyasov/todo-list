@@ -57,7 +57,9 @@ class BoardPolicy
      */
     public function update(User $user, Board $board)
     {
-        return true;
+        $boradUsers = array_column($board->users->toArray(), 'id');
+        $index = array_search($user->id, $boradUsers);
+        return $index !== false ? true : false;
     }
 
     /**

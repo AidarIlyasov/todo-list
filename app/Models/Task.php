@@ -18,4 +18,10 @@ class Task extends Model
         'update_user',
         'completed'
     ];
+
+
+    public function board()
+    {
+        return $this->hasOne(Board::class);
+    }
 }

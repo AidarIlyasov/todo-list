@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Board;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,11 @@ class BoardController extends Controller
     public function index()
     {
         $userId = auth()->user()->id;
+        $boards = User::with('boards')
+            ->where('id', $userId)
+            ->first(['id', 'name', 'email'])
+            ->toArray();
 
-        $boards = Board::select('id', 'title')->where('author_id', $userId)->get();
         return response()->json($boards, 200);
     }
 
@@ -45,20 +49,10 @@ class BoardController extends Controller
      */
     public function show(Board $board)
     {
-        $boardUsers = DB::table('board_user as bu')
-            ->join('users as u', 'u.id','=', 'bu.user_id')
-            ->select('u.id', 'u.name', 'u.email', 'bu.access')
-            ->where('bu.board_id', $board->id)
-            ->get();
-
-        $boardTaks = DB::table('tasks')
-            ->where('board_id', $board->id)
-            ->get();
-
         $data = [
             'board' => $board,
-            'users' => $boardUsers,
-            'tasks' => $boardTaks
+            'users' => $board->users,
+            'tasks' => $board->tasks
         ];
         return response()->json($data, 200);
     }
@@ -74,7 +68,8 @@ class BoardController extends Controller
     {
         $board->bg_image = $request->image;
         $board->save();
-        dd(array($request->image, $board->id));
+//        dd(array($request->image, $board->id));
+        return response()->json('Ok', 200);
     }
 
     /**

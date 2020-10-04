@@ -38,8 +38,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function show()
+    public function boards()
     {
-        return 'show';
+        return $this->belongsToMany(Board::class);
     }
 }
