@@ -3,11 +3,11 @@
         <h4 class="d-flex justify-content-between">My boards <span>-</span></h4>
         <ul class="list-group left-menu sm">
             <li
-                v-for="(board,index) in boards"
+                v-for="(board, index) in boards"
                 :key="index"
                 :data-test="board.editable"
-                :class="index == 1 ? 'active' : ''"
-                @click="selectBoard(board.id)"
+                :class="index  === activeBoard ? 'active' : ''"
+                @click="selectBoard(board.id, index)"
             >
                 <input v-show="board.editable" type="text" v-model="editableText">
                 <span v-show="!board.editable">{{ board.title }}</span>
@@ -33,7 +33,8 @@
                 editedText: '',
                 boardName: '',
                 newBoard: false,
-                boards: []
+                boards: [],
+                activeBoard: 0
             }
         },
         methods: {
@@ -59,17 +60,22 @@
                 });
                 this.boardName = '';
             },
-            selectBoard(id) {
+            selectBoard(id, index = 0) {
                 axios.get('api/boards/' + id).then(response => {
-                    bus.$emit('borad', response.data);
+                    bus.$emit('board', response.data);
                     bus.$emit('background', response.data.board.bg_image);
+                    this.activeBoard = index;
+                    // this.$notify({
+                    //     group: 'foo',
+                    //     text: 'Board background updated'
+                    // });
                 })
             }
         },
         created() {
             axios.get('api/boards').then(response => {
-                this.boards = response.data;
-                this.selectBoard(response.data[0]['id']); // load default first board
+                this.boards = response.data.boards;
+                this.selectBoard(response.data.boards[0]['id']); // load default first board
             })
         }
     }

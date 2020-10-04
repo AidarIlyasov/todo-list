@@ -3,7 +3,9 @@
 		<div class="aside-tasks mt-3 mb-3 today-tasks">
 				<h4 class="d-flex justify-content-between">Today tasks <span>+</span></h4>
 				<ul class="list-group left-menu sm">
-					<li>Some new task</li>
+					<li v-for="(task, index) in tasks">
+                        {{ task.title }}
+                    </li>
 				</ul>
 				<li class="add-task" @click="addTask()">Add task +</li>
 		</div>
@@ -42,6 +44,7 @@
 </template>
 <script>
 	import Modal from '../Modal.vue';
+    import {bus} from "../../app";
 	export default {
 		components: {
 			'modal': Modal
@@ -52,7 +55,8 @@
 				taskTitle: '',
 				taskEndDate: '',
 				taskDescription: '',
-				taskModal: false
+				taskModal: false,
+                tasks: []
 		  }
 		},
 		methods: {
@@ -70,8 +74,14 @@
 					'description': this.taskDescription
 				})
 			}
-		}
-	}
+		},
+        created() {
+            bus.$on('board', data => {
+                console.log('aside tasks', data.tasks);
+                this.tasks = data.tasks;
+            });
+        }
+    }
 </script>
 <style>
 

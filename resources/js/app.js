@@ -3,20 +3,26 @@ import VueRouter from 'vue-router';
 import axios from 'axios';
 import Unsplash from 'unsplash-js';
 import BootstrapVue from 'bootstrap-vue';
+import Notifications from 'vue-notification'
 
 import App from './components/App.vue'
 import passportClient from './components/passport/Clients.vue'
 import AuthorizedClients from './components/passport/AuthorizedClients.vue'
 import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue'
 
-// import Board from './components/Board.vue'
+// import Board from './components/AsideBoard.vue'
 // import Users from './components/Users.vue'
 // import Video from './components/Video.vue'
 
 export const bus = new Vue();
 export const unsplash = new Unsplash({ accessKey: "Wx4M3FmX_OdJ1ZYvsZKEjfntrXJlNA_Ju9tNzCHHujE" });
 
-Vue.use(BootstrapVue, axios)
+Vue.use(
+    BootstrapVue,
+    axios
+);
+
+Vue.use(Notifications);
 
 // const router = new VueRouter({
 //   mode: 'history',
@@ -50,7 +56,8 @@ const app = new Vue({
    		App,
         passportClient,
         AuthorizedClients,
-        PersonalAccessTokens
+        PersonalAccessTokens,
+        Notifications
  	},
     axios
 });

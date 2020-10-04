@@ -81,7 +81,8 @@
         },
         created() {
             let data = [];
-            bus.$on('borad', data => {
+            bus.$on('board', data => {
+                console.log('Task board component', data);
                 const author = data.users.findIndex(user => user.id == data.board.author_id);
                 this.board   = data.board;
                 this.board.author = data.users[author]['name'];

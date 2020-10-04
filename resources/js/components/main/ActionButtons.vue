@@ -25,7 +25,7 @@
 					>
 						<img
 							:src="image.small"
-							@click="setWallpaper(image.big)"
+							@click="setWallpaper(image.big, boardId)"
 						>
 						<a
 							:href="image.link"
@@ -57,6 +57,7 @@
 				msg: 'Action buttons',
 				bgImage: '',
 				images: [],
+                boardId: 0
 			}
 		},
 		methods: {
@@ -67,9 +68,9 @@
 			closeModal() {
 				this.wallpaperModal = false;
 			},
-			setWallpaper(url) {
+			setWallpaper(url, boardId) {
 				bus.$emit('background', url);
-				axios.put('api/boards/1', {'image': url}).then(res => {
+				axios.put('api/boards/' + boardId, {'image': url}).then(res => {
 					console.log(res);
 				}).catch(e => {
 					console.log(e);
@@ -89,6 +90,11 @@
 					})
 				});
 			});
+
+            bus.$on('board', data => {
+                console.log('actionButtons', data.board.id);
+                this.boardId = data.board.id;
+            });
 		}
 	}
 </script>
