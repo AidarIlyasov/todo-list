@@ -22,11 +22,19 @@ class BoardController extends Controller
     public function index()
     {
         $userId = auth()->user()->id;
-        $boards = User::with('boards')
-            ->where('id', $userId)
-            ->first(['id', 'name', 'email'])
+        $user = User::find($userId);
+        $boards = $user->boards()
+            ->get()
             ->toArray();
 
+//        $boards = Board::with([
+//                'users' => function($q) use ($userId) {
+//                    $q->wherePivot('user_id', $userId);
+//                }
+//            ])
+//            ->where('author_id', $userId)
+//            ->get()
+//            ->toArray();
         return response()->json($boards, 200);
     }
 
@@ -36,9 +44,14 @@ class BoardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Board $board)
     {
-        //
+        $userId = auth()->user()->id;
+        $board->title = $request->title;
+        $board->author_id = $userId;
+        $board->save();
+        $board->users()->attach($userId, ['access' => 1]);
+        return response()->json('Ok', 200);
     }
 
     /**
@@ -66,9 +79,9 @@ class BoardController extends Controller
      */
     public function update(Request $request, Board $board)
     {
-        $board->bg_image = $request->image;
+        $data = $request->all();
+        $board->fill($data);
         $board->save();
-//        dd(array($request->image, $board->id));
         return response()->json('Ok', 200);
     }
 

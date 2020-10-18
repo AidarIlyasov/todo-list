@@ -2090,15 +2090,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editableText: '',
-      editedText: '',
       boardName: '',
       newBoard: false,
       boards: [],
@@ -2106,51 +2103,64 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    // при редактирование
     editBoard: function editBoard(index) {
-      this.editableText = this.boards[index]['name'];
+      this.editableText = this.boards[index]['title'];
       this.boards.forEach(function (board) {
         return board.editable = false;
       });
       this.$set(this.boards[index], 'editable', true);
     },
     saveBoard: function saveBoard(index) {
-      this.boards[index]['name'] = this.editableText;
-      this.$set(this.boards[index], 'editable', false);
+      var _this = this;
+
+      var data = {
+        title: this.editableText
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.put('api/boards/' + this.boards[index]['id'], data).then(function (response) {
+        _this.$set(_this.boards[index], 'editable', false);
+      });
     },
     addBoard: function addBoard() {
       this.newBoard = true;
     },
     createBoard: function createBoard() {
+      var _this2 = this;
+
       this.newBoard = false;
-      var day = new Date();
-      this.boards.push({
-        'name': this.boardName,
-        'created_at': "".concat(day.getDate(), ".").concat(day.getMonth() + 1, ".").concat(day.getFullYear()),
-        'editable': false
+      var data = {
+        title: this.boardName
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('api/boards/', data).then(function (response) {
+        _this2.$notify({
+          group: 'foo',
+          title: 'Important message',
+          text: 'You successfully create board ' + data.title
+        });
+
+        _this2.boards.push(data);
       });
       this.boardName = '';
     },
     selectBoard: function selectBoard(id) {
-      var _this = this;
+      var _this3 = this;
 
       var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/boards/' + id).then(function (response) {
         _app__WEBPACK_IMPORTED_MODULE_1__["bus"].$emit('board', response.data);
         _app__WEBPACK_IMPORTED_MODULE_1__["bus"].$emit('background', response.data.board.bg_image);
-        _this.activeBoard = index; // this.$notify({
-        //     group: 'foo',
-        //     text: 'Board background updated'
-        // });
+        _this3.activeBoard = index;
       });
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this4 = this;
 
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/boards').then(function (response) {
-      _this2.boards = response.data.boards;
+      _this4.boards = response.data;
+      console.log('boards ', response.data);
 
-      _this2.selectBoard(response.data.boards[0]['id']); // load default first board
+      _this4.selectBoard(response.data[0]['id']); // load default first board
 
     });
   }
@@ -2567,10 +2577,11 @@ __webpack_require__.r(__webpack_exports__);
       this.wallpaperModal = false;
     },
     setWallpaper: function setWallpaper(url, boardId) {
+      var data = {
+        'bg_image': url
+      };
       _app_js__WEBPACK_IMPORTED_MODULE_1__["bus"].$emit('background', url);
-      axios__WEBPACK_IMPORTED_MODULE_3___default.a.put('api/boards/' + boardId, {
-        'image': url
-      }).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.put('api/boards/' + boardId, data).then(function (res) {
         console.log(res);
       })["catch"](function (e) {
         console.log(e);
@@ -32316,7 +32327,26 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".remove-color {\n  color: tomato;\n}\nbody {\n  background-color: #fff;\n}\ntextarea {\n  scrollbar-width: thin;\n}\ntextarea::-webkit-scrollbar {\n  width: 4px;\n  height: 4px;\n}\ntextarea::-webkit-scrollbar-track {\n  background: rgba(0, 0, 0, 0.1);\n}\ntextarea::-webkit-scrollbar-thumb {\n  background: rgba(0, 0, 0, 0.5);\n}\n.add-task {\n  color: #3d91cd;\n  font-weight: bold;\n  text-align: center;\n}\n.change-view {\n  margin: 0 0 0 auto;\n}\n.card {\n  border-radius: 0;\n}\n.bg-gray {\n  background: #fff;\n}\n#task-calendar {\n  height: 60vh;\n  overflow-y: scroll;\n}\n.day, .dt {\n  position: relative;\n}\n.contributor-profile {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  font-size: 12px;\n  line-height: 2.2;\n  border: solid 2px tomato;\n  text-align: center;\n  margin-left: -8px;\n  background-color: #fff;\n}\n.contributor-profile:first-child {\n  border: solid 2px green;\n}\n.user-profile {\n  display: -webkit-box;\n  display: flex;\n  -ms-align-items: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  font-size: 26px;\n  font-weight: bold;\n  width: 80px;\n  height: 80px;\n  cursor: pointer;\n  /*background: url(./public/img/profile.png) no-repeat center / contain;*/\n}\n.left-menu li {\n  list-style: none;\n  border-bottom: solid 1px #3d91cd;\n  line-height: 2;\n  cursor: pointer;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  padding-right: 5px;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.left-menu li:hover {\n  background-color: #dfe0e2;\n}\n.left-menu li:hover > i {\n  display: block;\n}\n.left-menu li > i {\n  display: none;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.left-menu li.active {\n  background-color: #2196F3;\n  color: #fff;\n}\n.left-menu li > i:hover {\n  font-size: 20px;\n}\n.profile-option {\n  line-height: 1.3;\n}\n.profile-option li {\n  list-style: none;\n  width: 100%;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 0 5px;\n}\n.profile-option li:hover {\n  background-color: #dfe0e2;\n}\n.board-contributors {\n  font-size: 16px;\n}\n.element-primary, .element-outline-primary {\n  padding: 0 5px;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.element-primary {\n  background-color: #3490dc;\n  border: solid 1px transparent;\n  color: #fff;\n}\n.element-primary:hover {\n  background: #fff;\n  color: #3490dc;\n  border: solid 1px #3490dc;\n}\n.element-outline-primary {\n  border: solid 1px #3490dc;\n}\n.element-outline-primary:hover {\n  background: #3490dc;\n  color: #fff;\n}\na:link,\na:active,\na:visited {\n  color: #777;\n  text-decoration: none;\n}\n.dt,\n.day,\n.mo {\n  text-align: right;\n  width: 55px;\n  height: 25px;\n}\n.day,\n.mo {\n  font-weight: bold;\n  color: #555;\n}\n.day,\n.dt {\n  margin-bottom: 5px;\n}\n.mo {\n  margin-bottom: 20px;\n}\ntable,\ntd {\n  border-spacing: 0;\n  vertical-align: top;\n}\nh1 {\n  display: inline-block;\n  font-size: 4.5em;\n  margin: 30px 0 0 40px;\n}\nh2 {\n  margin: 0 0 30px 40px;\n}\n#cal {\n  margin: 0 auto;\n  width: 780px;\n}\n#time {\n  float: right;\n}\nbody.night {\n  background-color: #111;\n  color: #EEE;\n}\nbody.night h1 {\n  color: #EEE;\n}\nbody.night .day,\nbody.night .mo {\n  color: #aaa;\n}\n.task-count {\n  background: #aea;\n  padding: 0 5px;\n  cursor: pointer;\n  position: absolute;\n  display: inline-block;\n}\n.uploaded-image {\n  margin-bottom: 15px;\n}", ""]);
+exports.push([module.i, ".remove-color {\n  color: tomato;\n}\nbody {\n  background-color: #fff;\n}\ntextarea {\n  scrollbar-width: thin;\n}\ntextarea::-webkit-scrollbar {\n  width: 4px;\n  height: 4px;\n}\ntextarea::-webkit-scrollbar-track {\n  background: rgba(0, 0, 0, 0.1);\n}\ntextarea::-webkit-scrollbar-thumb {\n  background: rgba(0, 0, 0, 0.5);\n}\n.change-view {\n  margin: 0 0 0 auto;\n}\n.card {\n  border-radius: 0;\n}\n.bg-gray {\n  background: #fff;\n}\n#task-calendar {\n  height: 60vh;\n  overflow-y: scroll;\n}\n.day, .dt {\n  position: relative;\n}\n.contributor-profile {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  font-size: 12px;\n  line-height: 2.2;\n  border: solid 2px tomato;\n  text-align: center;\n  margin-left: -8px;\n  background-color: #fff;\n}\n.contributor-profile:first-child {\n  border: solid 2px green;\n}\n.user-profile {\n  display: -webkit-box;\n  display: flex;\n  -ms-align-items: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  font-size: 26px;\n  font-weight: bold;\n  width: 80px;\n  height: 80px;\n  cursor: pointer;\n  /*background: url(./public/img/profile.png) no-repeat center / contain;*/\n}\n.profile-option {\n  line-height: 1.3;\n}\n.profile-option li {\n  list-style: none;\n  width: 100%;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 0 5px;\n}\n.profile-option li:hover {\n  background-color: #dfe0e2;\n}\n.board-contributors {\n  font-size: 16px;\n}\n.element-primary, .element-outline-primary {\n  padding: 0 5px;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.element-primary {\n  background-color: #3490dc;\n  border: solid 1px transparent;\n  color: #fff;\n}\n.element-primary:hover {\n  background: #fff;\n  color: #3490dc;\n  border: solid 1px #3490dc;\n}\n.element-outline-primary {\n  border: solid 1px #3490dc;\n}\n.element-outline-primary:hover {\n  background: #3490dc;\n  color: #fff;\n}\na:link,\na:active,\na:visited {\n  color: #777;\n  text-decoration: none;\n}\n.dt,\n.day,\n.mo {\n  text-align: right;\n  width: 55px;\n  height: 25px;\n}\n.day,\n.mo {\n  font-weight: bold;\n  color: #555;\n}\n.day,\n.dt {\n  margin-bottom: 5px;\n}\n.mo {\n  margin-bottom: 20px;\n}\ntable,\ntd {\n  border-spacing: 0;\n  vertical-align: top;\n}\nh1 {\n  display: inline-block;\n  font-size: 4.5em;\n  margin: 30px 0 0 40px;\n}\nh2 {\n  margin: 0 0 30px 40px;\n}\n#cal {\n  margin: 0 auto;\n  width: 780px;\n}\n#time {\n  float: right;\n}\nbody.night {\n  background-color: #111;\n  color: #EEE;\n}\nbody.night h1 {\n  color: #EEE;\n}\nbody.night .day,\nbody.night .mo {\n  color: #aaa;\n}\n.task-count {\n  background: #aea;\n  padding: 0 5px;\n  cursor: pointer;\n  position: absolute;\n  display: inline-block;\n}\n.uploaded-image {\n  margin-bottom: 15px;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".left-menu li {\n  list-style: none;\n  border-bottom: solid 1px #3d91cd;\n  line-height: 2;\n  cursor: pointer;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  padding-right: 5px;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.left-menu li:hover {\n  background-color: #dfe0e2;\n}\n.left-menu li:hover > i {\n  display: -webkit-box;\n  display: flex;\n}\n.left-menu li.active {\n  background-color: #2196F3;\n  color: #fff;\n}\n.left-menu li > i {\n  display: none;\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  width: 35px;\n  height: 25px;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.left-menu li > i:hover {\n  font-size: 20px;\n}\n.left-menu li > span {\n  -webkit-box-flex: 1;\n          flex-grow: 1;\n}\n.left-menu li > input {\n  width: 85%;\n  padding-left: 5px;\n}\n.left-menu li .add-task {\n  color: #3d91cd;\n  font-weight: bold;\n  text-align: center;\n}", ""]);
 
 // exports
 
@@ -37629,6 +37659,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./AsideBoard.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/main/ActionButtons.vue?vue&type=style&index=0&lang=scss&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/main/ActionButtons.vue?vue&type=style&index=0&lang=scss& ***!
@@ -39911,16 +39971,7 @@ var render = function() {
         _vm._l(_vm.boards, function(board, index) {
           return _c(
             "li",
-            {
-              key: index,
-              class: index === _vm.activeBoard ? "active" : "",
-              attrs: { "data-test": board.editable },
-              on: {
-                click: function($event) {
-                  return _vm.selectBoard(board.id, index)
-                }
-              }
-            },
+            { key: index, class: index === _vm.activeBoard ? "active" : "" },
             [
               _c("input", {
                 directives: [
@@ -39959,7 +40010,12 @@ var render = function() {
                       value: !board.editable,
                       expression: "!board.editable"
                     }
-                  ]
+                  ],
+                  on: {
+                    click: function($event) {
+                      return _vm.selectBoard(board.id, index)
+                    }
+                  }
                 },
                 [_vm._v(_vm._s(board.title))]
               ),
@@ -40017,7 +40073,7 @@ var render = function() {
                 expression: "boardName"
               }
             ],
-            attrs: { type: "text" },
+            attrs: { type: "text", placeholder: "new board title" },
             domProps: { value: _vm.boardName },
             on: {
               input: function($event) {
@@ -58803,7 +58859,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AsideBoard_vue_vue_type_template_id_453e95b0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AsideBoard.vue?vue&type=template&id=453e95b0& */ "./resources/js/components/aside/AsideBoard.vue?vue&type=template&id=453e95b0&");
 /* harmony import */ var _AsideBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AsideBoard.vue?vue&type=script&lang=js& */ "./resources/js/components/aside/AsideBoard.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AsideBoard.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -58811,7 +58869,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _AsideBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _AsideBoard_vue_vue_type_template_id_453e95b0___WEBPACK_IMPORTED_MODULE_0__["render"],
   _AsideBoard_vue_vue_type_template_id_453e95b0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -58840,6 +58898,22 @@ component.options.__file = "resources/js/components/aside/AsideBoard.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AsideBoard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/aside/AsideBoard.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss& ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./AsideBoard.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/aside/AsideBoard.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AsideBoard_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

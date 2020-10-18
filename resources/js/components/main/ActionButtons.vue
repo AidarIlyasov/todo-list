@@ -69,8 +69,11 @@
 				this.wallpaperModal = false;
 			},
 			setWallpaper(url, boardId) {
+			    let data = {
+			        'bg_image': url
+			    };
 				bus.$emit('background', url);
-				axios.put('api/boards/' + boardId, {'image': url}).then(res => {
+				axios.put('api/boards/' + boardId, data).then(res => {
 					console.log(res);
 				}).catch(e => {
 					console.log(e);

@@ -5,17 +5,15 @@
             <li
                 v-for="(board, index) in boards"
                 :key="index"
-                :data-test="board.editable"
                 :class="index  === activeBoard ? 'active' : ''"
-                @click="selectBoard(board.id, index)"
             >
                 <input v-show="board.editable" type="text" v-model="editableText">
-                <span v-show="!board.editable">{{ board.title }}</span>
+                <span v-show="!board.editable" @click="selectBoard(board.id, index)">{{ board.title }}</span>
                 <i class="fa fa-pencil" v-show="!board.editable" @click="editBoard(index)"></i>
                 <i class="fa fa-floppy-o" v-show="board.editable" @click="saveBoard(index)"></i>
             </li>
             <li class="add-task">
-                <input type="text" v-show="newBoard" v-model="boardName">
+                <input type="text" placeholder="new board title" v-show="newBoard" v-model="boardName">
                 <i class="fa fa-floppy-o" v-show="newBoard" @click="createBoard()"></i>
                 <span v-show="!newBoard" @click="addBoard()">Add board +</span>
             </li>
@@ -30,7 +28,6 @@
         data() {
             return {
                 editableText: '',
-                editedText: '',
                 boardName: '',
                 newBoard: false,
                 boards: [],
@@ -38,25 +35,35 @@
             }
         },
         methods: {
+            // при редактирование
             editBoard(index) {
-                this.editableText = this.boards[index]['name'];
+                this.editableText = this.boards[index]['title'];
                 this.boards.forEach(board => board.editable = false);
                 this.$set(this.boards[index], 'editable', true);
             },
             saveBoard(index) {
-                this.boards[index]['name'] = this.editableText;
-                this.$set(this.boards[index], 'editable', false);
+                let data = {
+                    title: this.editableText
+                };
+                axios.put('api/boards/' + this.boards[index]['id'], data).then(response => {
+                    this.$set(this.boards[index], 'editable', false);
+                });
             },
             addBoard() {
                 this.newBoard = true;
             },
             createBoard() {
                 this.newBoard = false;
-                let day = new Date();
-                this.boards.push({
-                    'name': this.boardName,
-                    'created_at': `${day.getDate()}.${day.getMonth() + 1}.${day.getFullYear()}`,
-                    'editable': false
+                let data = {
+                    title: this.boardName
+                };
+                axios.post('api/boards/', data).then(response => {
+                    this.$notify({
+                        group: 'foo',
+                        title: 'Important message',
+                        text: 'You successfully create board ' + data.title
+                    });
+                    this.boards.push(data);
                 });
                 this.boardName = '';
             },
@@ -65,21 +72,63 @@
                     bus.$emit('board', response.data);
                     bus.$emit('background', response.data.board.bg_image);
                     this.activeBoard = index;
-                    // this.$notify({
-                    //     group: 'foo',
-                    //     text: 'Board background updated'
-                    // });
                 })
-            }
+            },
         },
         created() {
             axios.get('api/boards').then(response => {
-                this.boards = response.data.boards;
-                this.selectBoard(response.data.boards[0]['id']); // load default first board
+                this.boards = response.data;
+                console.log('boards ', response.data);
+                this.selectBoard(response.data[0]['id']); // load default first board
             })
         }
     }
 </script>
-<style>
-
+<style lang="scss">
+    .left-menu li {
+        list-style: none;
+        border-bottom: solid 1px #3d91cd;
+        line-height: 2;
+        cursor: pointer;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        padding-right: 5px;
+        align-items: center;
+        &:hover {
+            background-color: #dfe0e2;
+            & > i {
+                display: flex;
+            }
+        }
+        &.active {
+            background-color: #2196F3;
+            color: #fff;
+        }
+        & > i {
+            display: none;
+            transition: 0.3s;
+            width: 35px;
+            height: 25px;
+            justify-content: center;
+            align-items: center;
+        }
+        & > i:hover {
+            font-size: 20px;
+        }
+        & > span {
+            flex-grow: 1;
+        }
+        & > input {
+            width: 85%;
+            padding-left: 5px;
+        }
+        .add-task {
+            color: #3d91cd;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
 </style>

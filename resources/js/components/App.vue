@@ -119,12 +119,6 @@
         background: rgba(0, 0, 0, 0.5);
     }
 
-    .add-task {
-        color: #3d91cd;
-        font-weight: bold;
-        text-align: center;
-    }
-
     .change-view {
         margin: 0 0 0 auto;
     }
@@ -173,44 +167,6 @@
         height: 80px;
         cursor: pointer;
         /*background: url(./public/img/profile.png) no-repeat center / contain;*/
-    }
-
-    .left-menu {
-        li {
-            list-style: none;
-            border-bottom: solid 1px #3d91cd;
-            line-height: 2;
-            cursor: pointer;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-between;
-            padding-right: 5px;
-            align-items: center;
-
-            &:hover {
-                background-color: #dfe0e2;
-
-                & > i {
-                    display: block;
-                }
-            }
-
-            & > i {
-                display: none;
-                transition: .3s;
-            }
-
-            &.active {
-                background-color: #2196F3;
-                color: #fff;
-            }
-
-            & > i:hover {
-                font-size: 20px;
-            }
-        }
     }
 
     .profile-option {

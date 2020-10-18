@@ -17,11 +17,11 @@ class CreateBoardsTable extends Migration
             $table->string('title', 255);
             $table->bigIncrements('id');
             $table->integer('author_id');
-            $table->integer('task_id');
+//            $table->integer('task_id');
             $table->string('view')->default('table'); // row
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
-            $table->string('bg_image', 255);
+            $table->dateTime('created_at')->useCurrent();
+            $table->dateTime('updated_at')->nullable();
+            $table->string('bg_image', 255)->nullable();
         });
     }
 

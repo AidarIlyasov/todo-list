@@ -45,7 +45,7 @@ class BoardPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
